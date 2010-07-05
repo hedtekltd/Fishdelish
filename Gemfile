@@ -2,27 +2,19 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.0.beta4'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem '4store-ruby', :git => 'git://github.com/moustaki/4store-ruby.git'
+gem 'activerdf', '1.6.11'
+gem 'activerdf_sparql', '1.3.6'
 
+tcg = [:test, :cucumber]
+rspec_version = '2.0.0.beta.15'
 
-# Use unicorn as the web server
-# gem 'unicorn'
+gem 'mongrel', '1.2.0.pre2', :group => tcg + [:development]
+gem 'rspec-rails', rspec_version, :group => tcg
+gem 'rspec-core', rspec_version, :group => tcg
+gem 'rspec-expectations', rspec_version, :group => tcg
+gem 'rspec-mocks', rspec_version, :group => tcg
 
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug'
-
-# Bundle the extra gems:
-# gem 'bj'
-# gem 'nokogiri', '1.4.1'
-# gem 'sqlite3-ruby', :require => 'sqlite3'
-# gem 'aws-s3', :require => 'aws/s3'
-
-# Bundle gems for certain environments:
-# gem 'rspec', :group => :test
-# group :test do
-#   gem 'webrat'
-# end
+gem 'cucumber-rails', '0.3.2', :group => :cucumber
+gem 'capybara', '0.3.9', :group => tcg
+gem 'spork', '0.8.4', :group => :cucumber
