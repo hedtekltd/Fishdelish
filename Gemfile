@@ -17,4 +17,3 @@ gem 'rspec-mocks', rspec_version, :group => tcg
 
 gem 'cucumber-rails', '0.3.2', :group => :cucumber
 gem 'capybara', '0.3.9', :group => tcg
-gem 'spork', '0.8.4', :group => :cucumber
