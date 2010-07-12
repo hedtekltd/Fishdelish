@@ -3,7 +3,7 @@ require File.expand_path('../boot', __FILE__)
 # Pick the frameworks you want:
 # require "active_record/railtie"
 require "action_controller/railtie"
-# require "action_mailer/railtie"
+require "action_mailer/railtie"
 # require "active_resource/railtie"
 # require "rails/test_unit/railtie"
 
@@ -41,6 +41,9 @@ module FishdelishRailsBrowser
     #   g.template_engine :erb
     #   g.test_framework  :test_unit, :fixture => true
     # end
+    config.generators do |g|
+      g.test_framework :rspec, :fixture => false
+    end
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"

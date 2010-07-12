@@ -1,0 +1,3 @@
+class RdfModel::Base
+  
+end
