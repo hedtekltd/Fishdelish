@@ -14,6 +14,10 @@ describe Species do
     Species.prefixes.should == {:species => "http://lod.fishbase.org/#SPECIES/"}
   end
 
+  it "should have a fishbase vocabulary" do
+    Species.vocabularies.should == {:fishbase => "http://192.168.1.6:8000/vocab/resource/"}
+  end
+
   it "should create a new species item when searching by id" do
     Species.find_by_id(1).class.should == Species
   end

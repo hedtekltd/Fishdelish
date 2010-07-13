@@ -25,6 +25,41 @@ describe RdfModel::Base do
     test_class.connection.should == @store 
   end
 
+  it "should allow the addition of known vocabularies" do
+    c = test_class
+    v = c.vocabulary :test, "http://test.host/vocab/"
+    c.vocabularies.should == {:test => v}
+    c.vocab_test.should == v
+    c.respond_to?(:vocab_test).should == true
+  end
+
+  it "should give a vocabulary URI when requested" do
+    c = test_class
+    c.vocabulary :test, "http://test.host/vocab/"
+    c.vocab_test.test_predicate.should == "http://test.host/vocab/test_predicate"
+  end
+
+  it "should use the vocabularies to define values" do
+    c = test_class
+    c.vocabulary :test, "http://test.host/vocab/"
+    t = c.new("", [{"p" => "http://test.host/vocab/test_predicate", "o" => "testing"}])
+    t.test_predicate.should == "testing"
+  end
+
+  it "should create an predicate-object attributes map from the passed in data" do
+    c = test_class
+    t = c.new("", [{"p" => "http://test.host/vocab/test_predicate", "o" => "testing"}])
+    t.attributes.should == {"http://test.host/vocab/test_predicate" => "testing"}
+  end
+
+  it "should replace URIs with prefixes where available" do
+    c = test_class
+    c.prefix :test, "http://test.host/vocab/"
+
+    @store.should_receive(:select).with("PREFIX test: <http://test.host/vocab/> SELECT * WHERE { test:12 ?p ?o }").and_return([{"p" => "testing", "o" => "testing again"}])
+    c.find_by_uri "http://test.host/vocab/12"
+  end
+
   it "should allow the definition of prefixes" do
     c = test_class
     c.prefix :test, "http://test.host/vocab"
@@ -35,15 +70,41 @@ describe RdfModel::Base do
   it "should add the prefix onto the start of a sparql query" do
     c = test_class
     c.prefix :test, "http://test.host/vocab"
-    sparql_query = "SELECT * WHERE {?s ?o ?p}"
+    sparql_query = "SELECT * WHERE {?s ?p ?o}"
     @store.should_receive(:select).with("PREFIX test: <http://test.host/vocab> #{sparql_query}")
     c.sparql(sparql_query)
   end
 
-  it "should allow the definition of value links" do
+  it "should allow sparql lookup via URI" do
     c = test_class
-    c.links_to_value :test_val, :with => "http://test.host/vocab/test_predicate"
-    t = c.new([{"p" => "http://test.host/vocab/test_predicate", "o" => "testing"}])
-    t.test_val.should == "testing"
+    @store.should_receive(:select).with("SELECT * WHERE { test:1 ?p ?o }").and_return([{"p" => "testing", "o" => "testing again"}])
+    t = c.find_by_uri("test:1")
+    t.class.should == c
+  end
+
+  it "should allow the linking of models" do
+    @store.stub!(:select).and_return(["uri" => "http://test.host/vocab/12"], [{"p" => "testing", "o" => "testing again"}])
+    c = test_class
+    c.vocabulary :test, "http://test.host/vocab/"
+    b = test_class
+    c.links_to_model b, :with => c.vocab_test.test_link
+    c.new("", [{"p" => "test1", "o" => "testing"}, {"p" => c.vocab_test.test_link, "o" => "12"}]).test_link.class.should == b
+  end
+
+  it "should store the URI when created" do
+    @store.stub!(:select).and_return([{"p" => "http://test.host/vocab/testing", "o" => "more tests"}])
+    c = test_class
+    c.find_by_uri("http://test.host/vocab/12").uri.should == "http://test.host/vocab/12"
+
+  end
+
+  it "should allow you to create inverse links" do
+    @store.stub!(:select).and_return([{"p" => "http://test.host/vocab/testing", "o" => "more tests"}])
+    c = test_class
+    c.vocabulary :test, "http://test.host/vocab/"
+    b = test_class
+    b.vocabulary :test, "http://test.host/vocab/"
+    c.linked_from b, :with => c.vocab_test.test_link
+    c.new("", [{"p" => "test1", "o" => "testing"}]).test_link[0].testing.should == "more tests"
   end
 end

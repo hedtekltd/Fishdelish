@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.0.beta4'
 
-gem '4store-ruby', :git => 'git://github.com/moustaki/4store-ruby.git'
+gem '4store-ruby', :git => 'git://github.com/hedtekltd/4store-ruby.git'
 gem 'activerdf', '1.6.11'
 gem 'activerdf_sparql', '1.3.6'
 
