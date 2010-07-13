@@ -105,7 +105,7 @@ class RdfModel::Base
         if linked_model?(predicate)
           create_linked_model_method(predicate, object, vocab)
         else
-          self.class.send(:define_method, $1) {object} if predicate =~ /#{vocab}(.*)/
+          self.class.send(:define_method, $1) {self.attributes[predicate]} if predicate =~ /#{vocab}(.*)/
         end
       end
     end

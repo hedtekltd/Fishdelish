@@ -46,6 +46,15 @@ describe RdfModel::Base do
     t.test_predicate.should == "testing"
   end
 
+  it "should allow multiple versions of the dynamic methods to exist" do
+    c = test_class
+    c.vocabulary :test, "http://test.host/vocab/"
+    t1 = c.new("", [{"p" => "http://test.host/vocab/test_predicate", "o" => "testing"}])
+    t2 = c.new("", [{"p" => "http://test.host/vocab/test_predicate", "o" => "testing2"}])
+    t1.test_predicate.should == "testing"
+    t2.test_predicate.should == "testing2"
+  end
+
   it "should create an predicate-object attributes map from the passed in data" do
     c = test_class
     t = c.new("", [{"p" => "http://test.host/vocab/test_predicate", "o" => "testing"}])

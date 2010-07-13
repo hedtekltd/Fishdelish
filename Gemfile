@@ -7,7 +7,7 @@ gem 'activerdf', '1.6.11'
 gem 'activerdf_sparql', '1.3.6'
 
 tcg = [:test, :cucumber]
-rspec_version = '2.0.0.beta.15'
+rspec_version = '2.0.0.beta.17'
 
 gem 'mongrel', '1.2.0.pre2', :group => tcg + [:development]
 gem 'rspec-rails', rspec_version, :group => tcg
