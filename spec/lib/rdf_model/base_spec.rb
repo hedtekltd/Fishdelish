@@ -39,4 +39,11 @@ describe RdfModel::Base do
     @store.should_receive(:select).with("PREFIX test: <http://test.host/vocab> #{sparql_query}")
     c.sparql(sparql_query)
   end
+
+  it "should allow the definition of value links" do
+    c = test_class
+    c.links_to_value :test_val, :with => "http://test.host/vocab/test_predicate"
+    t = c.new([{"p" => "http://test.host/vocab/test_predicate", "o" => "testing"}])
+    t.test_val.should == "testing"
+  end
 end
