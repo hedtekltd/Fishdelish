@@ -2,6 +2,9 @@ FishdelishRailsBrowser::Application.routes.draw do |map|
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
+  match 'common_names' => "common_names#index"
+  match 'common_name/:id' => 'common_names#show'
+
   match 'species/:id' => 'species#show', :as => 'species'
   match 'species' => 'species#index'
 

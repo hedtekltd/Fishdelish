@@ -1,12 +1,17 @@
 %h1= "#{@species.SPECIES_Genus} #{@species.SPECIES_Species}"
+
 %h2 Common Names
 %ul
   - @species.COMNAMES_SpecCode.each do |c_name|
-    %li= c_name.COMNAMES_ComName
-%h2 Size
-= "#{@species.SPECIES_Length}cm"
-%h2 Biology
-= @species.SPECIES_Comments
+    %li= link_to raw(c_name.common_name), "/common_name/#{c_name.COMNAMES_autoctr}"
+- if @species.respond_to? :SPECIES_Length
+  %h2 Size
+  = "#{@species.SPECIES_Length}cm"
+
+- if @species.respond_to? :SPECIES_Comments
+  %h2 Biology
+  = @species.SPECIES_Comments
+
 %h2 Other details
 - if @species.respond_to? :SPECIES_UsedasBait
   = "Used as bait? #{@species.SPECIES_UsedasBait}"
@@ -14,4 +19,4 @@
 %h2 Attributes
 %ul
 - @species.attributes.each do |k, v|
-  %li= "#{k} (#{v})"  
+  %li= "#{k} (#{v})"

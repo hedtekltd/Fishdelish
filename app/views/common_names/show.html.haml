@@ -1,0 +1,9 @@
+%h1= raw(@common_name.common_name)
+%p
+  Common name for
+  = link_to "#{@common_name.COMNAMES_SpecCode.SPECIES_Genus} #{@common_name.COMNAMES_SpecCode.SPECIES_Species}", "/species/#{@common_name.COMNAMES_SpecCode.SPECIES_SpecCode}"
+
+%h2 Attributes
+%ul
+- @common_name.attributes.each do |k, v|
+  %li= "#{k} (#{v})"
