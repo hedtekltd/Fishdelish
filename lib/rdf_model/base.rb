@@ -6,6 +6,7 @@ class ::RdfModel::Base
   end
 
   include ::RdfModel::Sparql
+  include ::RdfModel::Types
   include ::RdfModel::Associations
   include ::RdfModel::Attributes
   include ::RdfModel::Prefixes

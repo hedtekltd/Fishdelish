@@ -137,4 +137,13 @@ describe RdfModel::Base do
     @store.should_receive(:select).with("#{prefix_string}SELECT * WHERE { testing:1 ?p ?o }")
     c.find_by_id(1)
   end
+
+  it "should let you specify a type for a model" do
+    c = test_class
+    c.model_type = "vocab:TEST"
+    c.name_finder "test:name" => "name"
+    c.id_finder = "test:id"
+    @store.should_receive(:select).with("#{prefix_string}SELECT ?id ?name WHERE { ?type rdf:type vocab:TEST ; test:id ?id ; test:name ?name }")
+    c.find_all
+  end
 end
