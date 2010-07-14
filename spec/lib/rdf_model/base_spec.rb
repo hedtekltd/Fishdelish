@@ -2,6 +2,14 @@ require 'spec_helper'
 
 describe RdfModel::Base do
 
+  def prefix_string
+    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
+  end
+
+  def prefix_hash
+    {rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#", rdfs: "http://www.w3.org/2000/01/rdf-schema#"}
+  end
+
   def test_class
     Class.new(RdfModel::Base)
   end
@@ -15,9 +23,14 @@ describe RdfModel::Base do
     test_class
   end
 
+  it "should have rdf and rdfs as prefixes automatically" do
+    c = test_class
+    c.prefixes.should == prefix_hash
+  end
+
   it "should query the triplestore with SPARQL queries" do
     sparql_query = "SELECT ?subject ?predicate ?object"
-    @store.should_receive(:select).with(sparql_query)
+    @store.should_receive(:select).with("#{prefix_string}#{sparql_query}")
     test_class.sparql(sparql_query)
   end
 
@@ -65,28 +78,28 @@ describe RdfModel::Base do
     c = test_class
     c.prefix :test, "http://test.host/vocab/"
 
-    @store.should_receive(:select).with("PREFIX test: <http://test.host/vocab/> SELECT * WHERE { test:12 ?p ?o }").and_return([{"p" => "testing", "o" => "testing again"}])
+    @store.should_receive(:select).with("#{prefix_string}\nPREFIX test: <http://test.host/vocab/> SELECT * WHERE { test:12 ?p ?o }").and_return([{"p" => "testing", "o" => "testing again"}])
     c.find_by_uri "http://test.host/vocab/12"
   end
 
   it "should allow the definition of prefixes" do
     c = test_class
     c.prefix :test, "http://test.host/vocab"
-    c.prefixes.should == {:test => "http://test.host/vocab"}
-    c.sparql_prefix.should == "PREFIX test: <http://test.host/vocab> "
+    c.prefixes.should == {test: "http://test.host/vocab"}.merge(prefix_hash)
+    c.sparql_prefix.should == "#{prefix_string}\nPREFIX test: <http://test.host/vocab> "
   end
 
   it "should add the prefix onto the start of a sparql query" do
     c = test_class
     c.prefix :test, "http://test.host/vocab"
     sparql_query = "SELECT * WHERE {?s ?p ?o}"
-    @store.should_receive(:select).with("PREFIX test: <http://test.host/vocab> #{sparql_query}")
+    @store.should_receive(:select).with("#{prefix_string}\nPREFIX test: <http://test.host/vocab> #{sparql_query}")
     c.sparql(sparql_query)
   end
 
   it "should allow sparql lookup via URI" do
     c = test_class
-    @store.should_receive(:select).with("SELECT * WHERE { test:1 ?p ?o }").and_return([{"p" => "testing", "o" => "testing again"}])
+    @store.should_receive(:select).with("#{prefix_string}SELECT * WHERE { test:1 ?p ?o }").and_return([{"p" => "testing", "o" => "testing again"}])
     t = c.find_by_uri("test:1")
     t.class.should == c
   end
@@ -121,11 +134,7 @@ describe RdfModel::Base do
     @store.stub!(:select).and_return([{"p" => "http://test.host/vocab/testing", "o" => "more tests"}])
     c = test_class
     c.id_prefix = "testing:"
-    @store.should_receive(:select).with("SELECT * WHERE { testing:1 ?p ?o }")
+    @store.should_receive(:select).with("#{prefix_string}SELECT * WHERE { testing:1 ?p ?o }")
     c.find_by_id(1)
-  end
-
-  it "should allow you to get a list of items by type" do
-    
   end
 end

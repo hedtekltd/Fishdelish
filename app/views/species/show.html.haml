@@ -8,4 +8,10 @@
 %h2 Biology
 = @species.SPECIES_Comments
 %h2 Other details
-= "Used as bait? #{@species.SPECIES_UsedasBait}"
+- if @species.respond_to? :SPECIES_UsedasBait
+  = "Used as bait? #{@species.SPECIES_UsedasBait}"
+
+%h2 Attributes
+%ul
+- @species.attributes.each do |k, v|
+  %li= "#{k} (#{v})"  
