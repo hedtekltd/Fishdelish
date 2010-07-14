@@ -16,7 +16,7 @@ describe Species do
   end
 
   it "should have a vocab prefix" do
-    Species.prefixes.should include({:vocab => "http://192.168.1.6:8000/vocab/resource/"})
+    Species.prefixes.should include({:fishbase => "http://192.168.1.6:8000/vocab/resource/"})
   end
 
   it "should have a fishbase vocabulary" do

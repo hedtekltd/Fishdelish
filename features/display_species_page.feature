@@ -10,5 +10,5 @@ Feature: Display a species page for a fish
     And I should see the scientific name "<scientific_name>"
 
   Examples:
-    |species_id|common_name|size|scientific_name|genus|
-    |1|pike|10m|icthy|
+    |species_id|common_name|size|scientific_name|
+    |2304      |Tigerfish  |38cm |leptosoma      |

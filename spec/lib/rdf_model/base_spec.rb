@@ -116,4 +116,16 @@ describe RdfModel::Base do
     c.linked_from b, :with => c.vocab_test.test_link
     c.new("", [{"p" => "test1", "o" => "testing"}]).test_link[0].testing.should == "more tests"
   end
+
+  it "should allow you to search by id" do
+    @store.stub!(:select).and_return([{"p" => "http://test.host/vocab/testing", "o" => "more tests"}])
+    c = test_class
+    c.id_prefix = "testing:"
+    @store.should_receive(:select).with("SELECT * WHERE { testing:1 ?p ?o }")
+    c.find_by_id(1)
+  end
+
+  it "should allow you to get a list of items by type" do
+    
+  end
 end

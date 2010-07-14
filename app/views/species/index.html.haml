@@ -1,0 +1,3 @@
+%ul
+  - @species_list.each do |s|
+    %li= link_to "#{s["genus"]} #{s["name"]}", "/species/#{s["id"]}"

@@ -3,6 +3,7 @@ FishdelishRailsBrowser::Application.routes.draw do |map|
   # first created -> highest priority.
 
   match 'species/:id' => 'species#show', :as => 'species'
+  match 'species' => 'species#index'
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'

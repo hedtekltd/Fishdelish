@@ -1,6 +1,7 @@
 class RdfModel::Base
   class << self
     attr_accessor :connection, :prefixes, :vocabularies, :linked_models, :linked_from_models
+    attr_accessor :id_prefix
   end
 
   def self.inherited(subclass)
@@ -56,14 +57,24 @@ class RdfModel::Base
   end
 
   def self.sparql(query)
+    completed_query = self.sparql_prefix + convert_prefixes(query)
+    Rails.logger.info("SPARQL Query:\n#{completed_query}\n\n")
+    self.connection.select(completed_query)
+  end
+
+  def self.convert_prefixes(query)
     self.prefixes.each do |name, uri|
-      query.gsub!(uri, "#{name}:")
+      query = query.gsub(uri, "#{name}:")
     end
-    self.connection.select(self.sparql_prefix + query)
+    return query
   end
 
   def self.find_by_uri(uri)
     self.new(uri, self.sparql("SELECT * WHERE { #{uri} ?p ?o }"))
+  end
+
+  def self.find_by_id(id)
+    self.find_by_uri("#{self.id_prefix}#{id}")
   end
 
   attr_accessor :attributes, :uri
