@@ -1,20 +1,20 @@
-%h1= "#{@species.SPECIES_Genus} #{@species.SPECIES_Species}"
+%h1= "#{@species.vocab_fishbase_SPECIES_Genus} #{@species.vocab_fishbase_SPECIES_Species}"
 
 %h2 Common Names
 %ul
-  - @species.COMNAMES_SpecCode.each do |c_name|
-    %li= link_to raw(c_name.common_name), "/common_name/#{c_name.COMNAMES_autoctr}"
-- if @species.respond_to? :SPECIES_Length
+  - @species.common_names.each do |c_name|
+    %li= link_to raw(c_name.common_name), "/common_name/#{c_name.vocab_fishbase_COMNAMES_autoctr}"
+- if @species.respond_to? :vocab_fishbase_SPECIES_Length
   %h2 Size
-  = "#{@species.SPECIES_Length}cm"
+  = "#{@species.vocab_fishbase_SPECIES_Length}cm"
 
-- if @species.respond_to? :SPECIES_Comments
+- if @species.respond_to? :vocab_fishbase_SPECIES_Comments
   %h2 Biology
-  = @species.SPECIES_Comments
+  = @species.vocab_fishbase_SPECIES_Comments
 
 %h2 Other details
-- if @species.respond_to? :SPECIES_UsedasBait
-  = "Used as bait? #{@species.SPECIES_UsedasBait}"
+- if @species.respond_to? :vocab_fishbase_SPECIES_UsedasBait
+  = "Used as bait? #{@species.vocab_fishbase_SPECIES_UsedasBait}"
 
 %h2 Attributes
 %ul
