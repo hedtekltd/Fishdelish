@@ -1,0 +1,11 @@
+%h1= @family.name
+
+%h2 Species
+%ul
+  - @family.species.each do |s|
+    %li= link_to raw(s.name), "/species/#{s.to_param}"
+
+%h2 Attributes
+%ul
+- @family.attributes.each do |k, v|
+  %li= "#{k} (#{v})"

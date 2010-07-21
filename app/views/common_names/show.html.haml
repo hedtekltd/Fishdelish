@@ -1,8 +1,10 @@
-%h1= raw(@common_name.common_name)
+%h1= raw(@common_name.name)
 %p
   Common name for
-  = link_to "#{@common_name.vocab_fishbase_COMNAMES_SpecCode.vocab_fishbase_SPECIES_Genus} #{@common_name.vocab_fishbase_COMNAMES_SpecCode.vocab_fishbase_SPECIES_Species}", "/species/#{@common_name.vocab_fishbase_COMNAMES_SpecCode.vocab_fishbase_SPECIES_SpecCode}"
+  = link_to @common_name.vocab_fishbase_COMNAMES_SpecCode.name, "/species/#{@common_name.vocab_fishbase_COMNAMES_SpecCode.to_param}"
 
+%h2 Stock
+= link_to @common_name.vocab_fishbase_COMNAMES_StockCode.name, "/stock/#{@common_name.vocab_fishbase_COMNAMES_StockCode.to_param}"
 %h2 Attributes
 %ul
 - @common_name.attributes.each do |k, v|

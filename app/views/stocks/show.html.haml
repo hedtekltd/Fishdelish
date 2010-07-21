@@ -1,0 +1,9 @@
+%h1= @stock.name
+
+%h2 Species
+= link_to @stock.vocab_fishbase_STOCKS_SpecCode.name, "/species/#{@stock.vocab_fishbase_STOCKS_SpecCode.to_param}"
+
+%h2 Attributes
+%ul
+  - @stock.attributes.each do |k, v|
+    %li= "#{k} (#{v})"

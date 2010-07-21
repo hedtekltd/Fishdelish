@@ -1,9 +1,16 @@
-%h1= "#{@species.vocab_fishbase_SPECIES_Genus} #{@species.vocab_fishbase_SPECIES_Species}"
+%h1= @species.name
 
 %h2 Common Names
 %ul
   - @species.common_names.each do |c_name|
-    %li= link_to raw(c_name.common_name), "/common_name/#{c_name.vocab_fishbase_COMNAMES_autoctr}"
+    %li= link_to raw(c_name.name), "/common_name/#{c_name.to_param}"
+
+%h2 Stocks
+%ul
+  -@species.stocks.each do |stock|
+    %li= link_to stock.name, "/stock/#{stock.to_param}"
+%h2 Family
+= link_to raw(@species.vocab_fishbase_SPECIES_FamCode.name), "/family/#{@species.vocab_fishbase_SPECIES_FamCode.to_param}"
 - if @species.respond_to? :vocab_fishbase_SPECIES_Length
   %h2 Size
   = "#{@species.vocab_fishbase_SPECIES_Length}cm"
