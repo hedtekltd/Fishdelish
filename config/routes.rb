@@ -12,7 +12,14 @@ FishdelishRailsBrowser::Application.routes.draw do |map|
   match 'families' => 'families#index'
 
   match 'stock/:id' => 'stocks#show'
+  match 'stocks' => 'stocks#index'
 
+  match 'diet/:id' => 'diets#show'
+  match 'diets' => 'diets#index'
+
+  match 'cl50/:id' => 'cl50#show'
+  match 'cl50' => 'cl50#index'
+  
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
