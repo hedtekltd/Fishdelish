@@ -5,7 +5,8 @@ class Diet < RdfModel::Base
   id_predicate vocab_fishbase.DIET_autoctr
   name_finder :stage => vocab_fishbase.DIET_Stage
 
-  prefix :diet => "http://lod.fishbase.orc/#DIET/"
+  prefix :diet => "http://lod.fishbase.org/#DIET/"
+  id_prefix "http://lod.fishbase.org/#DIET/"
 
   def name
     vocab_fishbase_DIET_Stage

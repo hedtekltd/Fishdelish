@@ -1,0 +1,3 @@
+%ul
+  - @diets.each do |d|
+    %li= link_to d["name"], "/diet/#{d["id"]}"

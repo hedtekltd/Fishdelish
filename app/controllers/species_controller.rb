@@ -4,6 +4,7 @@ class SpeciesController < ApplicationController
   end
 
   def show
+    @spec_data = Species.species_data_by_id(params[:id])
     @species = Species.find_by_id(params[:id])
   end
 end
